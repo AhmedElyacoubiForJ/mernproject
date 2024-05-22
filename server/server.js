@@ -1,16 +1,17 @@
-// console.log("Server Starting...")
 const express = require("express");
-
+const dotenv = require("dotenv").config();
+const PORT = process.env.PORT || 5000
 const app = express();
 
+
 app.get("/", (req, res) => {
-    res.send("Hello World, from node express server");
+    res.status(200).json({message: "Welcome to the User Info. API"});
 });
 
-app.get("/users", (req, res) => {
-    res.send("<h1>users</h1>");
+app.get("/api/users", (req, res) => {
+    res.status(200).json([]);
 });
 
-app.listen("3001", ()=> {
-    console.log("Server Running...");
+app.listen(PORT, ()=> {
+    console.log(`Server started on port ${PORT}`);
 });
