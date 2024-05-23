@@ -1,6 +1,11 @@
 import Axios from "axios";
 import { useState, useEffect } from "react";
-// https://jsonplaceholder.typicode.com/users
+
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import { Container, Badge, ListGroup, Form, Button } from "react-bootstrap";
+
 
 export default function App() {
   const api = "http://localhost:5000";
@@ -31,7 +36,6 @@ export default function App() {
         });
       });
     }
-
   };
 
   useEffect(() => {
@@ -41,16 +45,58 @@ export default function App() {
   }, [users]);
 
   return (
-    <>
-      {users.map(({ _id, name, age, email }) => (
-        <div className="card" key={_id}>
-          <ul>
-            <li>Name: {name}</li>
-            <li>Age: {age}</li>
-            <li>Email: {email}</li>
-          </ul>
-        </div>
-      ))}
+    <Container>
+      
+      <Form className="form">
+        <Form.Control
+          type="name"
+          placeholder="Name"
+          className="form-control"
+          id="name"
+          name="name"
+          onChange={onChange}
+        />
+
+        <Form.Control
+          type="number"
+          placeholder="Age"
+          className="form-control"
+          id="age"
+          name="age"
+          onChange={onChange}
+        />
+        <Form.Control
+          type="email"
+          placeholder="email"
+          className="form-control"
+          id="email"
+          name="email"
+          onChange={onChange}
+        />
+
+        <button type="submit" class="btn btn-primary">
+          Create User
+        </button>
+      </Form>
+
+      <div className="result">
+        {users.map(({ _id, name, age, email }) => (
+          <ListGroup key={_id}>
+            <ListGroup.Item
+              variant="dark"
+              className="d-flex justify-content-between"
+            >
+              <div className="ms-2 me-auto">
+                <div className="fw-bold">{name}</div>
+                {email}
+              </div>
+              <Badge bg="success" pill>
+                {age}
+              </Badge>
+            </ListGroup.Item>
+          </ListGroup>
+        ))}
+      </div>
 
       <div>
         <input
@@ -77,8 +123,8 @@ export default function App() {
           value={email}
           onChange={onChange}
         />
-        <button onClick={createUser}>Submit</button>
+        <button onClick={createUser}>Create User</button>
       </div>
-    </>
+    </Container>
   );
 }
