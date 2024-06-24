@@ -3,18 +3,14 @@ import { useState, useEffect } from "react";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-import { Container, Badge, ListGroup, Form, Button } from "react-bootstrap";
-
+import { Container, Badge, ListGroup, Form } from "react-bootstrap";
 
 export default function App() {
   const api = "http://localhost:5000";
   const [users, setUsers] = useState([]);
-  const [user, setUser] = useState({
-    name: "",
-    age: "",
-    email: "",
-  });
+  const defaultUser = { name: "", age: 0, email: "" }
+  const [user, setUser] = useState(defaultUser);
+  
   const { name, age, email } = user;
 
   const onChange = (e) => {
@@ -23,62 +19,22 @@ export default function App() {
 
   const createUser = () => {
     if (name && age && email) {
-      Axios.post(`${api}/createUser`, {
-        name,
-        age,
-        email,
-      }).then((res) => {
+      Axios.post(`${api}/createUser`, user).then((res) => {
         setUsers([...users, res.data]);
-        setUser({
-          name: "",
-          age: "",
-          email: "",
-        });
+        setUser(defaultUser);
       });
     }
   };
 
   useEffect(() => {
-    Axios.get(`${api}/users`).then((res) => {
+    Axios.get(`${api}/users`)
+    .then((res) => {
       setUsers(res.data);
     });
   }, [users]);
 
   return (
     <Container>
-      
-      <Form className="form">
-        <Form.Control
-          type="name"
-          placeholder="Name"
-          className="form-control"
-          id="name"
-          name="name"
-          onChange={onChange}
-        />
-
-        <Form.Control
-          type="number"
-          placeholder="Age"
-          className="form-control"
-          id="age"
-          name="age"
-          onChange={onChange}
-        />
-        <Form.Control
-          type="email"
-          placeholder="email"
-          className="form-control"
-          id="email"
-          name="email"
-          onChange={onChange}
-        />
-
-        <button type="submit" class="btn btn-primary">
-          Create User
-        </button>
-      </Form>
-
       <div className="result">
         {users.map(({ _id, name, age, email }) => (
           <ListGroup key={_id}>
@@ -90,15 +46,43 @@ export default function App() {
                 <div className="fw-bold">{name}</div>
                 {email}
               </div>
-              <Badge bg="success" pill>
-                {age}
-              </Badge>
+              <Badge bg="success" pill>{age}</Badge>
             </ListGroup.Item>
           </ListGroup>
         ))}
       </div>
+      <div className="mt-2">
+        <Form className="form">
+          <Form.Control
+            type="name"
+            placeholder="Name"
+            className="form-control"
+            id="name"
+            name="name"
+            onChange={onChange}
+          />
+          <Form.Control
+            type="number"
+            placeholder="Age"
+            className="form-control"
+            id="age"
+            name="age"
+            onChange={onChange}
+          />
+          <Form.Control
+            type="email"
+            placeholder="email"
+            className="form-control"
+            id="email"
+            name="email"
+            onChange={onChange}
+          />
+          <button onClick={createUser} type="submit" class="btn btn-success">Create User</button>
+        </Form>
+      </div>
+      
 
-      <div>
+     {/*  <div>
         <input
           type="text"
           id="name"
@@ -124,7 +108,7 @@ export default function App() {
           onChange={onChange}
         />
         <button onClick={createUser}>Create User</button>
-      </div>
+      </div> */}
     </Container>
   );
 }

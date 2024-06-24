@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+
 const cors = require("cors");
 app.use(cors());
 app.use(express.json());
@@ -13,7 +14,7 @@ const UserModel = require("./models/Users");
 // Connect to database
 connectDB();
 
-app.get("/", (req, res) => {
+app.get("/", (req, res) => {  
   res.status(200).json({ message: "Welcome to the User Info. API" });
 });
 
@@ -29,8 +30,12 @@ app.post("/createUser", async (req, res) => {
   const newUser = new UserModel(user);
   await newUser.save();
   res.json(req.body);
+})/* .then((res) => {
+  console.log("User created")
+}).catch((err) =>{
+  console.log(err)
 });
-
+ */
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
