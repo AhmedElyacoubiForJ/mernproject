@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Badge, ListGroup, Form } from "react-bootstrap";
+import { Container, Badge, ListGroup, Form, Button } from "react-bootstrap";
 
 export default function App() {
   const api = "http://localhost:5000";
@@ -35,80 +35,26 @@ export default function App() {
 
   return (
     <Container>
+      <div className="mt-2">
+        <Form className="form">
+          <Form.Control type="name" placeholder="Name" className="form-control" id="name" name="name" onChange={onChange} />
+          <Form.Control type="number" placeholder="Age" className="form-control" id="age" name="age" onChange={onChange} />
+          <Form.Control type="email" placeholder="email" className="form-control" id="email" name="email" onChange={onChange} />
+          <button onClick={createUser} type="submit" class="btn btn-success">Create User</button>
+        </Form>
+      </div>
       <div className="result">
         {users.map(({ _id, name, age, email }) => (
           <ListGroup key={_id}>
-            <ListGroup.Item
-              variant="dark"
-              className="d-flex justify-content-between"
-            >
+            <ListGroup.Item variant="dark" className="d-flex justify-content-between">
               <div className="ms-2 me-auto">
-                <div className="fw-bold">{name}</div>
-                {email}
+                <div className="fw-bold">{name}</div>{email}
               </div>
               <Badge bg="success" pill>{age}</Badge>
             </ListGroup.Item>
           </ListGroup>
         ))}
       </div>
-      <div className="mt-2">
-        <Form className="form">
-          <Form.Control
-            type="name"
-            placeholder="Name"
-            className="form-control"
-            id="name"
-            name="name"
-            onChange={onChange}
-          />
-          <Form.Control
-            type="number"
-            placeholder="Age"
-            className="form-control"
-            id="age"
-            name="age"
-            onChange={onChange}
-          />
-          <Form.Control
-            type="email"
-            placeholder="email"
-            className="form-control"
-            id="email"
-            name="email"
-            onChange={onChange}
-          />
-          <button onClick={createUser} type="submit" class="btn btn-success">Create User</button>
-        </Form>
-      </div>
-      
-
-     {/*  <div>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          placeholder="Name"
-          value={name}
-          onChange={onChange}
-        />
-        <input
-          type="number"
-          id="age"
-          name="age"
-          placeholder="Age"
-          value={age}
-          onChange={onChange}
-        />
-        <input
-          type="text"
-          id="email"
-          name="email"
-          placeholder="Email"
-          value={email}
-          onChange={onChange}
-        />
-        <button onClick={createUser}>Create User</button>
-      </div> */}
     </Container>
   );
 }
